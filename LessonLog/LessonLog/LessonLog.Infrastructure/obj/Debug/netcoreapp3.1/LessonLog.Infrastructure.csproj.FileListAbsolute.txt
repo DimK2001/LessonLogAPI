@@ -1,0 +1,15 @@
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\bin\Debug\netcoreapp3.1\LessonLog.Infrastructure.deps.json
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\bin\Debug\netcoreapp3.1\LessonLog.Infrastructure.runtimeconfig.json
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\bin\Debug\netcoreapp3.1\LessonLog.Infrastructure.runtimeconfig.dev.json
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\bin\Debug\netcoreapp3.1\LessonLog.Infrastructure.dll
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\bin\Debug\netcoreapp3.1\LessonLog.Infrastructure.pdb
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\bin\Debug\netcoreapp3.1\LessonLog.Domain.dll
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\bin\Debug\netcoreapp3.1\LessonLog.Domain.pdb
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.csproj.AssemblyReference.cache
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.AssemblyInfoInputs.cache
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.AssemblyInfo.cs
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.dll
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.pdb
+D:\Institut\C#\LessonLog\LessonLog\LessonLog.Infrastructure\obj\Debug\netcoreapp3.1\LessonLog.Infrastructure.genruntimeconfig.cache
