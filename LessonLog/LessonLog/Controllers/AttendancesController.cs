@@ -29,7 +29,7 @@ namespace LessonLog.API.Controllers
         public async Task<ActionResult<IEnumerable<Attendance>>> GetAttendences()
         {
             //return await _context.Attendences.ToListAsync();
-            return await _attendanceRepository.GetAllAttendencesAsync();
+            return await _attendanceRepository.GetAllAsync();
         }
 
         // GET: api/Attendances/5
@@ -37,7 +37,7 @@ namespace LessonLog.API.Controllers
         public async Task<ActionResult<Attendance>> GetAttendance(Guid id)
         {
             //var attendance = await _context.Attendences.FindAsync(id);
-            var attendance = await _attendanceRepository.GetAttendanceAsync(id);
+            var attendance = await _attendanceRepository.GetByIdAsync(id);
 
             if (attendance == null)
             {
@@ -57,7 +57,7 @@ namespace LessonLog.API.Controllers
                 return BadRequest();
             }
 
-            await _attendanceRepository.UpdateAttendenceAsync(attendance);
+            await _attendanceRepository.UpdateAsync(attendance);
 
             return NoContent();
             /*_context.Entry(attendance).State = EntityState.Modified;
@@ -88,7 +88,7 @@ namespace LessonLog.API.Controllers
         {
             //_context.Attendences.Add(attendance);
             //await _context.SaveChangesAsync();
-            await _attendanceRepository.AddAttendenceAsync(attendance);
+            await _attendanceRepository.AddAsync(attendance);
 
             return CreatedAtAction("GetAttendance", new { id = attendance.Id }, attendance);
         }
@@ -98,14 +98,16 @@ namespace LessonLog.API.Controllers
         public async Task<IActionResult> DeleteAttendance(Guid id)
         {
             //var attendance = await _context.Attendences.FindAsync(id);
+            var attendance = await _attendanceRepository.GetByIdAsync(id);
 
             if (attendance == null)
             {
                 return NotFound();
             }
 
-            _context.Attendences.Remove(attendance);
-            await _context.SaveChangesAsync();
+            //_context.Attendences.Remove(attendance);
+            //await _context.SaveChangesAsync();
+            await _attendanceRepository.DeleteAsync(id);
 
             return NoContent();
         }

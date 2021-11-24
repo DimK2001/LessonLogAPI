@@ -14,26 +14,26 @@ namespace LessonLog.Infrastructure.Repository
         {
             _context = context;
         }
-        public async Task<List<Attendance>> GetAllAttendencesAsync()
+        public async Task<List<Attendance>> GetAllAsync()
         {
             return await _context.Attendences.ToListAsync();
         }
-        public async Task AddAttendenceAsync(Attendance attendance)
+        public async Task AddAsync(Attendance attendance)
         {
             await _context.Attendences.AddAsync(attendance);
             await _context.SaveChangesAsync();
         }
-        public async Task<Attendance> GetAttendanceAsync(Guid id)
+        public async Task<Attendance> GetByIdAsync(Guid id)
         {
             return await _context.Attendences.FindAsync(id);
         }
-        public async Task UpdateAttendenceAsync(Attendance attendance)
+        public async Task UpdateAsync(Attendance attendance)
         {
             Attendance existAttendence = await _context.Attendences.FindAsync(attendance.Id);
             _context.Entry(existAttendence).CurrentValues.SetValues(attendance);
             await _context.SaveChangesAsync();
         }
-        public async Task<bool> DeleteAttendenceAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             Attendance attendance = await _context.Attendences.FindAsync(id);
             if  (attendance == null)
