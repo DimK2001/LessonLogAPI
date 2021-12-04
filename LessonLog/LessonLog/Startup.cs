@@ -30,6 +30,10 @@ namespace LessonLog
         {
 
             services.AddControllers();
+            services.AddMvc(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
             services.AddDbContext<LessonLog.Infrastructure.LessonLogContext>(opt =>
                     opt.UseSqlServer(Configuration.GetConnectionString("LessonLog")));
             services.AddSwaggerGen(c =>

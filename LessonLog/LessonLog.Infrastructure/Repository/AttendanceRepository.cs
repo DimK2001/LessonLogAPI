@@ -18,16 +18,33 @@ namespace LessonLog.Infrastructure.Repository
         {
             return await _context.Attendences.ToListAsync();
         }
-        public async Task AddAsync(Attendance attendance)
+        public async Task<Guid> AddAsync(AttendanceDTO attendanceDTO)
         {
-            await _context.Attendences.AddAsync(attendance);
+            var attendance = new Attendance()
+            {
+                Status = attendanceDTO.Status,
+                Late = attendanceDTO.Late,
+                Leaving = attendanceDTO.Leaving,
+                LessonId = attendanceDTO.LessonId
+            };
+            _context.Attendences.Add(attendance);
             await _context.SaveChangesAsync();
+            return attendance.Id;
         }
-        public async Task<Attendance> GetByIdAsync(Guid id)
+        public async Task<AttendanceOutDTO> GetByIdAsync(Guid id)
         {
-            return await _context.Attendences.FindAsync(id);
+            Attendance attendance = await _context.Attendences.FindAsync(id);
+            AttendanceOutDTO dto = new AttendanceOutDTO()
+            {
+                Id = attendance.Id,
+                Status = attendance.Status,
+                Late = attendance.Late,
+                Leaving = attendance.Leaving,
+                LessonId = attendance.LessonId
+            };
+            return dto;
         }
-        public async Task UpdateAsync(Attendance attendance)
+        public async Task UpdateAsync(AttendanceOutDTO attendance)
         {
             Attendance existAttendence = await _context.Attendences.FindAsync(attendance.Id);
             _context.Entry(existAttendence).CurrentValues.SetValues(attendance);

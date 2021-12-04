@@ -18,24 +18,47 @@ namespace LessonLog.Infrastructure.Repository
         {
             return await _context.Lessons.ToListAsync();
         }
-        public async Task AddAsync(Lesson lesson)
+        public async Task<Guid> AddAsync(LessonDTO lessonDTO)
         {
-            await _context.Lessons.AddAsync(lesson);
+            var lesson = new Lesson()
+            {
+                Type = lessonDTO.Type,
+                Number = lessonDTO.Number,
+                Date = lessonDTO.Date,
+                StartTime = lessonDTO.StartTime,
+                EndTime = lessonDTO.EndTime,
+                Theme = lessonDTO.Theme,
+                State = lessonDTO.State
+            };
+            _context.Lessons.Add(lesson);
             await _context.SaveChangesAsync();
+            return lesson.Id;
         }
-        public async Task<Lesson> GetByIdAsync(Guid id)
+        public async Task<LessonOutDTO> GetByIdAsync(Guid id)
         {
-            return await _context.Lessons.FindAsync(id);
+            var lesson = await _context.Lessons.FindAsync(id);
+            var dto = new LessonOutDTO()
+            {
+                Id = lesson.Id,
+                Type = lesson.Type,
+                Number = lesson.Number,
+                Date = lesson.Date,
+                StartTime = lesson.StartTime,
+                EndTime = lesson.EndTime,
+                Theme = lesson.Theme,
+                State = lesson.State
+            };
+            return dto;
         }
-        public async Task UpdateAsync(Lesson lesson)
+        public async Task UpdateAsync(LessonOutDTO lesson)
         {
-            Lesson existLesson = await _context.Lessons.FindAsync(lesson.Id);
+            var existLesson = await _context.Lessons.FindAsync(lesson.Id);
             _context.Entry(existLesson).CurrentValues.SetValues(lesson);
             await _context.SaveChangesAsync();
         }
         public async Task<bool> DeleteAsync(Guid id)
         {
-            Lesson lesson = await _context.Lessons.FindAsync(id);
+            var lesson = await _context.Lessons.FindAsync(id);
             if (lesson == null)
             {
                 return false;

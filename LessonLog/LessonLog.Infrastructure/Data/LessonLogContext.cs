@@ -16,7 +16,7 @@ namespace LessonLog.Infrastructure
         public DbSet<Student> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Сlassroom> Сlassrooms { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,24 +28,36 @@ namespace LessonLog.Infrastructure
                 .HasOne(e => e.Student)
                 .WithMany(e => e.Attendances)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(e => e.StudentId)
-                .IsRequired(true);
-            modelBuilder.Entity<Student>()
-                .HasOne(e => e.Group)
-                .WithMany(e => e.Students)
+                .IsRequired(false);
+            modelBuilder.Entity<Group>()
+                .HasMany(e => e.Students)
+                .WithOne(e => e.Group)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasForeignKey(e => e.GroupId)
                 .IsRequired(true);
-            modelBuilder.Entity<Group>()
-                .HasOne(e => e.Lesson)
-                .WithMany(e => e.Groups)
+            modelBuilder.Entity<Lesson>()
+                .HasMany(e => e.Groups)
+                .WithOne(e => e.Lesson)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasForeignKey(e => e.LessonId)
-                .IsRequired(false);
+                .IsRequired(true);
             modelBuilder.Entity<Lesson>()
                 .HasMany(e => e.Attendances)
                 .WithOne(e => e.Lesson)
                 .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Lesson>()
+                .HasMany(e => e.Teachers)
+                .WithOne(e => e.Lesson)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Lesson>()
+                .HasOne(e => e.Classroom)
+                .WithOne(e => e.Lesson)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Subject>()
+                .HasMany(e => e.Lessons)
+                .WithOne(e => e.Subject)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(true);
         }
     }
 }

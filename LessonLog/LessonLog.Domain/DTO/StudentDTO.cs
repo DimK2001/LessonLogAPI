@@ -6,9 +6,8 @@ using System.Text;
 
 namespace LessonLog.Domain
 {
-    public class Student
+    public class StudentDTO
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
 #nullable enable
         public Guid? IdManagementSys { get; set; }
@@ -18,9 +17,6 @@ namespace LessonLog.Domain
 #nullable disable
         public bool GroupFlag { get; set; }
 
-        //Внешние ключи
         public Guid? GroupId { get; set; }
-        public Group Group { get; set; }
-        public List<Attendance> Attendances { get; set; }
     }
 }

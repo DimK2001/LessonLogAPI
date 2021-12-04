@@ -34,7 +34,7 @@ namespace LessonLog.API.Controllers
 
         // GET: api/Attendances/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Attendance>> GetAttendance(Guid id)
+        public async Task<ActionResult<AttendanceOutDTO>> GetAttendance(Guid id)
         {
             //var attendance = await _context.Attendences.FindAsync(id);
             var attendance = await _attendanceRepository.GetByIdAsync(id);
@@ -50,7 +50,7 @@ namespace LessonLog.API.Controllers
         // PUT: api/Attendances/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAttendance(Guid id, Attendance attendance)
+        public async Task<IActionResult> PutAttendance(Guid id, AttendanceOutDTO attendance)
         {
             if (id != attendance.Id)
             {
@@ -84,13 +84,13 @@ namespace LessonLog.API.Controllers
         // POST: api/Attendances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Attendance>> PostAttendance(Attendance attendance)
+        public async Task<ActionResult<AttendanceOutDTO>> PostAttendance(AttendanceDTO attendance)
         {
             //_context.Attendences.Add(attendance);
             //await _context.SaveChangesAsync();
-            await _attendanceRepository.AddAsync(attendance);
+            Guid id = await _attendanceRepository.AddAsync(attendance);
 
-            return CreatedAtAction("GetAttendance", new { id = attendance.Id }, attendance);
+            return CreatedAtAction("GetAttendance", new { id = id }, attendance);
         }
 
         // DELETE: api/Attendances/5

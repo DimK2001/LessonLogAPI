@@ -26,13 +26,13 @@ namespace LessonLog.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Theme = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    State = table.Column<int>(type: "int", nullable: true),
+                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,12 +41,11 @@ namespace LessonLog.Infrastructure.Migrations
                         name: "FK_Lessons_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Сlassrooms",
+                name: "Classrooms",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -55,13 +54,12 @@ namespace LessonLog.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Сlassrooms", x => x.Id);
+                    table.PrimaryKey("PK_Classrooms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Сlassrooms_Lessons_LessonId",
+                        name: "FK_Classrooms_Lessons_LessonId",
                         column: x => x.LessonId,
                         principalTable: "Lessons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +70,7 @@ namespace LessonLog.Infrastructure.Migrations
                     GroupNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DirectionNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DirectionName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,8 +91,7 @@ namespace LessonLog.Infrastructure.Migrations
                     Post = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AcademicPosition = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AcademicTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LessinId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,8 +100,7 @@ namespace LessonLog.Infrastructure.Migrations
                         name: "FK_Teachers_Lessons_LessonId",
                         column: x => x.LessonId,
                         principalTable: "Lessons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -113,7 +109,7 @@ namespace LessonLog.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdManagementSys = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdManagementSys = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PhotoURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AttestationMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExamMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -136,12 +132,12 @@ namespace LessonLog.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Late = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Leaving = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PresenceTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PresencePercentage = table.Column<float>(type: "real", nullable: false),
+                    Late = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Leaving = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PresenceTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PresencePercentage = table.Column<float>(type: "real", nullable: true),
                     LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -159,12 +155,6 @@ namespace LessonLog.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Сlassrooms_LessonId",
-                table: "Сlassrooms",
-                column: "LessonId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Attendences_LessonId",
                 table: "Attendences",
                 column: "LessonId");
@@ -173,6 +163,12 @@ namespace LessonLog.Infrastructure.Migrations
                 name: "IX_Attendences_StudentId",
                 table: "Attendences",
                 column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classrooms_LessonId",
+                table: "Classrooms",
+                column: "LessonId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_LessonId",
@@ -198,10 +194,10 @@ namespace LessonLog.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Сlassrooms");
+                name: "Attendences");
 
             migrationBuilder.DropTable(
-                name: "Attendences");
+                name: "Classrooms");
 
             migrationBuilder.DropTable(
                 name: "Teachers");

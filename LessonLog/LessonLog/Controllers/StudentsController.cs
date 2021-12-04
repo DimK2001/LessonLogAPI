@@ -13,49 +13,49 @@ namespace LessonLog.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LessonsController : ControllerBase
+    public class StudentsController : ControllerBase
     {
         private readonly LessonLogContext _context;
-        private readonly LessonRepository _lessonRepository;
+        private readonly StudentRepository _studentRepository;
 
-        public LessonsController(LessonLogContext context)
+        public StudentsController(LessonLogContext context)
         {
             _context = context;
-            _lessonRepository = new LessonRepository(_context);
+            _studentRepository = new StudentRepository(_context);
         }
 
         // GET: api/Lessons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lesson>>> GetLessons()
+        public async Task<ActionResult<IEnumerable<Student>>> GetLessons()
         {
-            return await _lessonRepository.GetAllAsync();
+            return await _studentRepository.GetAllAsync();
         }
 
         // GET: api/Lessons/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LessonOutDTO>> GetLesson(Guid id)
+        public async Task<ActionResult<StudentOutDTO>> GetLesson(Guid id)
         {
-            var lesson = await _lessonRepository.GetByIdAsync(id);
+            var student = await _studentRepository.GetByIdAsync(id);
 
-            if (lesson == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return lesson;
+            return student;
         }
 
         // PUT: api/Lessons/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLesson(Guid id, LessonOutDTO lesson)
+        public async Task<IActionResult> PutLesson(Guid id, StudentOutDTO student)
         {
-            if (id != lesson.Id)
+            if (id != student.Id)
             {
                 return BadRequest();
             }
 
-            await _lessonRepository.UpdateAsync(lesson);
+            await _studentRepository.UpdateAsync(student);
 
             return NoContent();
         }
@@ -63,32 +63,32 @@ namespace LessonLog.API.Controllers
         // POST: api/Lessons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LessonOutDTO>> PostLesson(LessonDTO lesson)
+        public async Task<ActionResult<StudentOutDTO>> PostLesson(StudentDTO student)
         {
-            Guid id = await _lessonRepository.AddAsync(lesson);
+            Guid id = await _studentRepository.AddAsync(student);
 
-            return CreatedAtAction("GetLesson", new { id = id }, lesson);
+            return CreatedAtAction("GetStudent", new { id = id }, student);
         }
 
         // DELETE: api/Lessons/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLesson(Guid id)
         {
-            var lesson = await _lessonRepository.GetByIdAsync(id);
+            var student = await _studentRepository.GetByIdAsync(id);
 
-            if (lesson == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            await _lessonRepository.DeleteAsync(id);
+            await _studentRepository.DeleteAsync(id);
 
             return NoContent();
         }
 
-        private bool LessonExists(Guid id)
+        private bool StudentExists(Guid id)
         {
-            return _context.Lessons.Any(e => e.Id == id);
+            return _context.Students.Any(e => e.Id == id);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LessonLog.Domain
 {
-    public class Lesson
+    public class LessonOutDTO
     {
         public Guid Id { get; set; }
         public string Type { get; set; }
@@ -16,12 +16,5 @@ namespace LessonLog.Domain
         public DateTime? EndTime { get; set; }
         public string Theme { get; set; }
         public int? State { get; set; }
-
-        //Внешние ключи
-        public Subject Subject { get; set; }
-        public Classroom Classroom { get; set; }
-        public List<Teacher> Teachers { get; set; }
-        public List<Attendance> Attendances { get; set; }
-        public List<Group> Groups { get; set; }
     }
 }

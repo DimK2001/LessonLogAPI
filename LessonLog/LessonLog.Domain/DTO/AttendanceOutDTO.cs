@@ -6,12 +6,12 @@ using System.Text;
 
 namespace LessonLog.Domain
 {
-    public class Сlassroom
+    public class AttendanceOutDTO
     {
         public Guid Id { get; set; }
-        public string Number { get; set; }
-
+        public string Status { get; set; }
+        public DateTime? Late { get; set; }
+        public DateTime? Leaving { get; set; }
         public Guid LessonId { get; set; }
-        public Lesson Lesson { get; set; }
     }
 }

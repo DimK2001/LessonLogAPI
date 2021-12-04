@@ -16,7 +16,7 @@ namespace LessonLog.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("LessonLog.Domain.Attendance", b =>
@@ -25,25 +25,25 @@ namespace LessonLog.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Late")
+                    b.Property<DateTime?>("Late")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Leaving")
+                    b.Property<DateTime?>("Leaving")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("LessonId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("PresencePercentage")
+                    b.Property<float?>("PresencePercentage")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("PresenceTime")
+                    b.Property<DateTime?>("PresenceTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("StudentId")
+                    b.Property<Guid?>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -53,6 +53,26 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Attendences");
+                });
+
+            modelBuilder.Entity("LessonLog.Domain.Classroom", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId")
+                        .IsUnique();
+
+                    b.ToTable("Classrooms");
                 });
 
             modelBuilder.Entity("LessonLog.Domain.Group", b =>
@@ -70,7 +90,7 @@ namespace LessonLog.Infrastructure.Migrations
                     b.Property<string>("GroupNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("LessonId")
+                    b.Property<Guid>("LessonId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -86,22 +106,22 @@ namespace LessonLog.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Number")
+                    b.Property<int?>("Number")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("State")
+                    b.Property<int?>("State")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("SubjectId")
+                    b.Property<Guid?>("SubjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Theme")
@@ -132,10 +152,11 @@ namespace LessonLog.Infrastructure.Migrations
                     b.Property<bool>("GroupFlag")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("GroupId")
+                    b.Property<Guid?>("GroupId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdManagementSys")
+                    b.Property<Guid?>("IdManagementSys")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -180,10 +201,7 @@ namespace LessonLog.Infrastructure.Migrations
                     b.Property<string>("AcademicTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("LessinId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("LessonId")
+                    b.Property<Guid>("LessonId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -199,26 +217,6 @@ namespace LessonLog.Infrastructure.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("LessonLog.Domain.Сlassroom", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("LessonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Number")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonId")
-                        .IsUnique();
-
-                    b.ToTable("Сlassrooms");
-                });
-
             modelBuilder.Entity("LessonLog.Domain.Attendance", b =>
                 {
                     b.HasOne("LessonLog.Domain.Lesson", "Lesson")
@@ -230,12 +228,22 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasOne("LessonLog.Domain.Student", "Student")
                         .WithMany("Attendances")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Lesson");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("LessonLog.Domain.Classroom", b =>
+                {
+                    b.HasOne("LessonLog.Domain.Lesson", "Lesson")
+                        .WithOne("Classroom")
+                        .HasForeignKey("LessonLog.Domain.Classroom", "LessonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("LessonLog.Domain.Group", b =>
@@ -243,7 +251,8 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasOne("LessonLog.Domain.Lesson", "Lesson")
                         .WithMany("Groups")
                         .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Lesson");
                 });
@@ -253,8 +262,7 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasOne("LessonLog.Domain.Subject", "Subject")
                         .WithMany("Lessons")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Subject");
                 });
@@ -274,17 +282,8 @@ namespace LessonLog.Infrastructure.Migrations
                 {
                     b.HasOne("LessonLog.Domain.Lesson", "Lesson")
                         .WithMany("Teachers")
-                        .HasForeignKey("LessonId");
-
-                    b.Navigation("Lesson");
-                });
-
-            modelBuilder.Entity("LessonLog.Domain.Сlassroom", b =>
-                {
-                    b.HasOne("LessonLog.Domain.Lesson", "Lesson")
-                        .WithOne("Сlassroom")
-                        .HasForeignKey("LessonLog.Domain.Сlassroom", "LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Lesson");
@@ -297,9 +296,9 @@ namespace LessonLog.Infrastructure.Migrations
 
             modelBuilder.Entity("LessonLog.Domain.Lesson", b =>
                 {
-                    b.Navigation("Сlassroom");
-
                     b.Navigation("Attendances");
+
+                    b.Navigation("Classroom");
 
                     b.Navigation("Groups");
 
