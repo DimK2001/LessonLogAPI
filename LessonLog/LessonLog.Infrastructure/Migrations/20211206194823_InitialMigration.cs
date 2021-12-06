@@ -41,7 +41,8 @@ namespace LessonLog.Infrastructure.Migrations
                         name: "FK_Lessons_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,7 +60,8 @@ namespace LessonLog.Infrastructure.Migrations
                         name: "FK_Classrooms_Lessons_LessonId",
                         column: x => x.LessonId,
                         principalTable: "Lessons",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,7 +116,7 @@ namespace LessonLog.Infrastructure.Migrations
                     AttestationMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExamMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GroupFlag = table.Column<bool>(type: "bit", nullable: false),
-                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {

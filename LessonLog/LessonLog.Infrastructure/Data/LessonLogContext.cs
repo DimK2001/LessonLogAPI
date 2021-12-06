@@ -24,23 +24,20 @@ namespace LessonLog.Infrastructure
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Attendance>()
-                .HasOne(e => e.Student)
-                .WithMany(e => e.Attendances)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired(false);
+            modelBuilder.Entity<Student>()
+                .HasMany(e => e.Attendances)
+                .WithOne(e => e.Student)
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Group>()
                 .HasMany(e => e.Students)
                 .WithOne(e => e.Group)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(e => e.GroupId)
-                .IsRequired(true);
+                .HasForeignKey(e => e.GroupId);
             modelBuilder.Entity<Lesson>()
                 .HasMany(e => e.Groups)
                 .WithOne(e => e.Lesson)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(e => e.LessonId)
-                .IsRequired(true);
+                .HasForeignKey(e => e.LessonId);
             modelBuilder.Entity<Lesson>()
                 .HasMany(e => e.Attendances)
                 .WithOne(e => e.Lesson)
@@ -49,15 +46,14 @@ namespace LessonLog.Infrastructure
                 .HasMany(e => e.Teachers)
                 .WithOne(e => e.Lesson)
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Lesson>()
+            /*modelBuilder.Entity<Lesson>()
                 .HasOne(e => e.Classroom)
                 .WithOne(e => e.Lesson)
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Subject>()
                 .HasMany(e => e.Lessons)
                 .WithOne(e => e.Subject)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired(true);
+                .OnDelete(DeleteBehavior.NoAction);*/
         }
     }
 }

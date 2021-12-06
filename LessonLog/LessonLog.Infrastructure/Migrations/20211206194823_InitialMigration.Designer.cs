@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LessonLog.Infrastructure.Migrations
 {
     [DbContext(typeof(LessonLogContext))]
-    [Migration("20211204150820_InitialMigration")]
+    [Migration("20211206194823_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +155,6 @@ namespace LessonLog.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("GroupId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdManagementSys")
@@ -242,7 +241,7 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasOne("LessonLog.Domain.Lesson", "Lesson")
                         .WithOne("Classroom")
                         .HasForeignKey("LessonLog.Domain.Classroom", "LessonId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Lesson");
@@ -263,8 +262,7 @@ namespace LessonLog.Infrastructure.Migrations
                 {
                     b.HasOne("LessonLog.Domain.Subject", "Subject")
                         .WithMany("Lessons")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("SubjectId");
 
                     b.Navigation("Subject");
                 });
@@ -274,8 +272,7 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasOne("LessonLog.Domain.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Group");
                 });
