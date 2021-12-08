@@ -152,7 +152,7 @@ namespace LessonLog.Infrastructure.Migrations
                     b.Property<bool>("GroupFlag")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("GroupId")
+                    b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdManagementSys")
@@ -270,7 +270,8 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasOne("LessonLog.Domain.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Group");
                 });

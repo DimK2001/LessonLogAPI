@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LessonLog.Infrastructure.Migrations
 {
     [DbContext(typeof(LessonLogContext))]
-    [Migration("20211206194823_InitialMigration")]
+    [Migration("20211207081415_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,7 +154,7 @@ namespace LessonLog.Infrastructure.Migrations
                     b.Property<bool>("GroupFlag")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("GroupId")
+                    b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdManagementSys")
@@ -272,7 +272,8 @@ namespace LessonLog.Infrastructure.Migrations
                     b.HasOne("LessonLog.Domain.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Group");
                 });

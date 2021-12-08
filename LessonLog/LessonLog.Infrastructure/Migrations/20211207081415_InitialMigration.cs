@@ -116,7 +116,7 @@ namespace LessonLog.Infrastructure.Migrations
                     AttestationMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExamMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GroupFlag = table.Column<bool>(type: "bit", nullable: false),
-                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

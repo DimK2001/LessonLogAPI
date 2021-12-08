@@ -36,8 +36,7 @@ namespace LessonLog.Infrastructure
             modelBuilder.Entity<Lesson>()
                 .HasMany(e => e.Groups)
                 .WithOne(e => e.Lesson)
-                .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(e => e.LessonId);
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Lesson>()
                 .HasMany(e => e.Attendances)
                 .WithOne(e => e.Lesson)

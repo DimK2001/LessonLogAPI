@@ -17,6 +17,6 @@ namespace LessonLog.Domain
 #nullable disable
         public bool GroupFlag { get; set; }
 
-        public Guid? GroupId { get; set; }
+        public Guid GroupId { get; set; }
     }
 }
