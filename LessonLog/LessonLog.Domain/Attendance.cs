@@ -10,9 +10,9 @@ namespace LessonLog.Domain
     {
         public Guid Id { get; set; }
         public string Status { get; set; }
-        public DateTime? Late { get; set; }
-        public DateTime? Leaving { get; set; }
-        public DateTime? PresenceTime { get; set; }
+        public DateTime Comming { get; set; }
+        public DateTime Leaving { get; set; }
+        public TimeSpan PresenceTime { get; set; }
         public float? PresencePercentage { get; set; }
 
         //Внешние ключи

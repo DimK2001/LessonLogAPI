@@ -41,8 +41,15 @@ namespace LessonLog.API.Controllers
             {
                 return NotFound();
             }
-
-            return teacher;
+            var dto = new TeacherOutDTO()
+            {
+                Name = teacher.Name,
+                Post = teacher.Post,
+                AcademicPosition = teacher.AcademicPosition,
+                AcademicTitle = teacher.AcademicTitle,
+                LessonId = teacher.LessonId
+            };
+            return dto;
         }
 
         // PUT: api/Lessons/5
@@ -63,8 +70,16 @@ namespace LessonLog.API.Controllers
         // POST: api/Lessons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TeacherOutDTO>> PostLesson(TeacherDTO teacher)
+        public async Task<ActionResult<TeacherOutDTO>> PostLesson(TeacherDTO teacherDTO)
         {
+            var teacher = new Teacher()
+            {
+                Name = teacherDTO.Name,
+                Post = teacherDTO.Post,
+                AcademicPosition = teacherDTO.AcademicPosition,
+                AcademicTitle = teacherDTO.AcademicTitle,
+                LessonId = teacherDTO.LessonId
+            };
             Guid id = await _teacherRepository.AddAsync(teacher);
 
             return CreatedAtAction("GetLesson", new { id = id }, teacher);

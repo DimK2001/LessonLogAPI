@@ -18,31 +18,16 @@ namespace LessonLog.Infrastructure.Repository
         {
             return await _context.Groups.ToListAsync();
         }
-        public async Task<Guid> AddAsync(GroupDTO groupDTO)
+        public async Task<Guid> AddAsync(Group group)
         {
-            var group = new Group()
-            {
-                GroupNumber = groupDTO.GroupNumber,
-                DirectionNumber = groupDTO.DirectionNumber,
-                DirectionName = groupDTO.DirectionName,
-                LessonId = groupDTO.LessonId
-            };
             _context.Groups.Add(group);
             await _context.SaveChangesAsync();
             return group.Id;
         }
-        public async Task<GroupOutDTO> GetByIdAsync(Guid id)
+        public async Task<Group> GetByIdAsync(Guid id)
         {
             Group group = await _context.Groups.FindAsync(id);
-            GroupOutDTO dto = new GroupOutDTO()
-            {
-                Id = group.Id,
-                GroupNumber = group.GroupNumber,
-                DirectionNumber = group.DirectionNumber,
-                DirectionName = group.DirectionName,
-                LessonId = group.LessonId
-            };
-            return dto;
+            return group;
         }
         public async Task UpdateAsync(GroupOutDTO group)
         {

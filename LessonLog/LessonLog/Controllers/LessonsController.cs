@@ -41,8 +41,20 @@ namespace LessonLog.API.Controllers
             {
                 return NotFound();
             }
-
-            return lesson;
+            var dto = new LessonOutDTO()
+            {
+                Id = lesson.Id,
+                Type = lesson.Type,
+                Number = lesson.Number,
+                Date = lesson.Date,
+                StartTime = lesson.StartTime,
+                EndTime = lesson.EndTime,
+                Theme = lesson.Theme,
+                State = lesson.State,
+                Subject = lesson.Subject,
+                Classroom = lesson.Classroom
+            };
+            return dto;
         }
 
         // PUT: api/Lessons/5
@@ -63,8 +75,20 @@ namespace LessonLog.API.Controllers
         // POST: api/Lessons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LessonOutDTO>> PostLesson(LessonDTO lesson)
+        public async Task<ActionResult<LessonOutDTO>> PostLesson(LessonDTO lessonDTO)
         {
+            var lesson = new Lesson()
+            {
+                Type = lessonDTO.Type,
+                Number = lessonDTO.Number,
+                Date = lessonDTO.Date,
+                StartTime = lessonDTO.StartTime,
+                EndTime = lessonDTO.EndTime,
+                Theme = lessonDTO.Theme,
+                State = lessonDTO.State,
+                Subject = lessonDTO.Subject,
+                Classroom = lessonDTO.Classroom
+            };
             Guid id = await _lessonRepository.AddAsync(lesson);
 
             return CreatedAtAction("GetLesson", new { id = id }, lesson);

@@ -1,0 +1,85 @@
+﻿@page "/Lessons"
+
+@using LessonLog.Domain
+
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject IJSRuntime js
+
+<h3>Lessons</h3>
+
+@if (lessons == null)
+{
+    <p><em>Empty</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Number</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>StartTime</th>
+                <th>EndTime</th>
+                <th>Theme</th>
+                <th>State</th>
+                <th>Theme</th>
+                <th>State</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lesson in lessons)
+            {
+            <tr>
+                <td>@lesson.Id</td>
+                <td>@lesson.Number</td>
+                <td>@lesson.Type</td>
+                <td>@lesson.Date</td>
+                <td>@lesson.StartTime</td>
+                <td>@lesson.EndTime</td>
+                <td>@lesson.Theme</td>
+                <td>@lesson.StartTime</td>
+                <td><a href="/participantEdit/@lesson.Id" class="btn btn-info">Edit</a></td>
+                <td><a @onclick="(() => delete(lesson.Id))" class="btn btn-danger">Delete</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (responseMessage != null)
+{
+    <p>@responseMessage</p>
+}
+
+@code {
+    private IEnumerable<Lesson> lessons;
+
+    private string responseMessage { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        lessons = await httpClient.GetFromJsonAsync<Lesson[]>
+            ("https://localhost:44317/api/Lessons");
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        lessons = await httpClient.GetFromJsonAsync<Lesson[]>
+            ("https://localhost:44317/api/Lessons");
+    }
+    public async Task delete(Guid Id)
+    {
+        bool confirm = await js.InvokeAsync<bool>("confirm", "Do you want to delete this?");
+        if (confirm)
+        {
+            var response = await httpClient.DeleteAsync($"https://localhost:44317/api/Lessons/{Id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                responseMessage = await response.Content.ReadAsStringAsync();
+            }
+
+        }
+    }
+}

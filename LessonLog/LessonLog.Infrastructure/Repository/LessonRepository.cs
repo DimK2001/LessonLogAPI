@@ -18,37 +18,16 @@ namespace LessonLog.Infrastructure.Repository
         {
             return await _context.Lessons.ToListAsync();
         }
-        public async Task<Guid> AddAsync(LessonDTO lessonDTO)
+        public async Task<Guid> AddAsync(Lesson lesson)
         {
-            var lesson = new Lesson()
-            {
-                Type = lessonDTO.Type,
-                Number = lessonDTO.Number,
-                Date = lessonDTO.Date,
-                StartTime = lessonDTO.StartTime,
-                EndTime = lessonDTO.EndTime,
-                Theme = lessonDTO.Theme,
-                State = lessonDTO.State
-            };
             _context.Lessons.Add(lesson);
             await _context.SaveChangesAsync();
             return lesson.Id;
         }
-        public async Task<LessonOutDTO> GetByIdAsync(Guid id)
+        public async Task<Lesson> GetByIdAsync(Guid id)
         {
             var lesson = await _context.Lessons.FindAsync(id);
-            var dto = new LessonOutDTO()
-            {
-                Id = lesson.Id,
-                Type = lesson.Type,
-                Number = lesson.Number,
-                Date = lesson.Date,
-                StartTime = lesson.StartTime,
-                EndTime = lesson.EndTime,
-                Theme = lesson.Theme,
-                State = lesson.State
-            };
-            return dto;
+            return lesson;
         }
         public async Task UpdateAsync(LessonOutDTO lesson)
         {

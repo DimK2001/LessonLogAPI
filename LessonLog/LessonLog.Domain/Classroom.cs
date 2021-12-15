@@ -10,8 +10,5 @@ namespace LessonLog.Domain
     {
         public Guid Id { get; set; }
         public string Number { get; set; }
-
-        public Guid LessonId { get; set; }
-        public Lesson Lesson { get; set; }
     }
 }

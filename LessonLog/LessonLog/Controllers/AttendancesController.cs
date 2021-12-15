@@ -43,8 +43,16 @@ namespace LessonLog.API.Controllers
             {
                 return NotFound();
             }
+            AttendanceOutDTO dto = new AttendanceOutDTO()
+            {
+                Id = attendance.Id,
+                Status = attendance.Status,
+                Late = attendance.Comming,
+                Leaving = attendance.Leaving,
+                LessonId = attendance.LessonId
+            };
 
-            return attendance;
+            return dto;
         }
 
         // PUT: api/Attendances/5
@@ -84,10 +92,19 @@ namespace LessonLog.API.Controllers
         // POST: api/Attendances
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AttendanceOutDTO>> PostAttendance(AttendanceDTO attendance)
+        public async Task<ActionResult<AttendanceOutDTO>> PostAttendance(AttendanceDTO attendanceDTO)
         {
             //_context.Attendences.Add(attendance);
             //await _context.SaveChangesAsync();
+            var attendance = new Attendance()
+            {
+                Status = attendanceDTO.Status,
+                Comming = attendanceDTO.Comming,
+                Leaving = attendanceDTO.Leaving,
+                LessonId = attendanceDTO.LessonId,
+                PresenceTime = attendanceDTO.Leaving.Subtract(attendanceDTO.Comming),
+                PresencePercentage = (attendanceDTO.Leaving.Subtract(attendanceDTO.Comming).Minutes / 90) * 100
+            };
             Guid id = await _attendanceRepository.AddAsync(attendance);
 
             return CreatedAtAction("GetAttendance", new { id = id }, attendance);

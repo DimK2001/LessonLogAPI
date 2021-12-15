@@ -15,5 +15,8 @@ namespace LessonLog.Domain
         public DateTime? EndTime { get; set; }
         public string Theme { get; set; }
         public int? State { get; set; }
+
+        public Subject Subject { get; set; }
+        public Classroom Classroom { get; set; }
     }
 }

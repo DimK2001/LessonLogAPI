@@ -11,7 +11,5 @@ namespace LessonLog.Domain
         public Guid Id { get; set; }
         public string SubjectName { get; set; }
         public Guid Identifier { get; set; }
-
-        public List<Lesson> Lessons { get; set; }
     }
 }

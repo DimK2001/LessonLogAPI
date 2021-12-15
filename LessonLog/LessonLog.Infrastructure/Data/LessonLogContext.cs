@@ -14,9 +14,7 @@ namespace LessonLog.Infrastructure
         public DbSet<Group> Groups { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Student> Students { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Classroom> Classrooms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,14 +43,8 @@ namespace LessonLog.Infrastructure
                 .HasMany(e => e.Teachers)
                 .WithOne(e => e.Lesson)
                 .OnDelete(DeleteBehavior.NoAction);
-            /*modelBuilder.Entity<Lesson>()
-                .HasOne(e => e.Classroom)
-                .WithOne(e => e.Lesson)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Subject>()
-                .HasMany(e => e.Lessons)
-                .WithOne(e => e.Subject)
-                .OnDelete(DeleteBehavior.NoAction);*/
+            modelBuilder.Entity<Lesson>().OwnsOne(u => u.Classroom);
+            modelBuilder.Entity<Lesson>().HasOne(u => u.Subject);
         }
     }
 }

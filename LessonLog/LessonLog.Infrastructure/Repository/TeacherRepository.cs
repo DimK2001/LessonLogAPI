@@ -18,32 +18,16 @@ namespace LessonLog.Infrastructure.Repository
         {
             return await _context.Teachers.ToListAsync();
         }
-        public async Task<Guid> AddAsync(TeacherDTO teacherDTO)
+        public async Task<Guid> AddAsync(Teacher teacher)
         {
-            var teacher = new Teacher()
-            {
-                Name = teacherDTO.Name,
-                Post = teacherDTO.Post,
-                AcademicPosition = teacherDTO.AcademicPosition,
-                AcademicTitle = teacherDTO.AcademicTitle,
-                LessonId = teacherDTO.LessonId
-            };
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
             return teacher.Id;
         }
-        public async Task<TeacherOutDTO> GetByIdAsync(Guid id)
+        public async Task<Teacher> GetByIdAsync(Guid id)
         {
             var teacher = await _context.Teachers.FindAsync(id);
-            var dto = new TeacherOutDTO()
-            {
-                Name = teacher.Name,
-                Post = teacher.Post,
-                AcademicPosition = teacher.AcademicPosition,
-                AcademicTitle = teacher.AcademicTitle,
-                LessonId = teacher.LessonId
-            };
-            return dto;
+            return teacher;
         }
         public async Task UpdateAsync(TeacherOutDTO teacher)
         {

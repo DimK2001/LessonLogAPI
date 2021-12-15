@@ -41,8 +41,16 @@ namespace LessonLog.API.Controllers
             {
                 return NotFound();
             }
+            GroupOutDTO dto = new GroupOutDTO()
+            {
+                Id = group.Id,
+                GroupNumber = group.GroupNumber,
+                DirectionNumber = group.DirectionNumber,
+                DirectionName = group.DirectionName,
+                LessonId = group.LessonId
+            };
 
-            return group;
+            return dto;
         }
 
         // PUT: api/Lessons/5
@@ -63,8 +71,15 @@ namespace LessonLog.API.Controllers
         // POST: api/Lessons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<GroupOutDTO>> PostLesson(GroupDTO group)
+        public async Task<ActionResult<GroupOutDTO>> PostLesson(GroupDTO groupDTO)
         {
+            var group = new Group()
+            {
+                GroupNumber = groupDTO.GroupNumber,
+                DirectionNumber = groupDTO.DirectionNumber,
+                DirectionName = groupDTO.DirectionName,
+                LessonId = groupDTO.LessonId
+            };
             Guid id = await _groupRepository.AddAsync(group);
 
             return CreatedAtAction("GetGroup", new { id = id }, group);
