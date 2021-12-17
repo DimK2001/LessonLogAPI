@@ -43,14 +43,16 @@ else
                     <td>@lesson.StartTime</td>
                     <td>@lesson.EndTime</td>
                     <td>@lesson.Theme</td>
-                    <td>@lesson.StartTime</td>
-                    <td><a href="/participantEdit/@lesson.Id" class="btn btn-info">Edit</a></td>
+                    <td>@lesson.State</td>
+                    <td><a href="/EditLesson/@lesson.Id" class="btn btn-info">Edit</a></td>
                     <td><a @onclick="(() => Delete(lesson.Id))" class="btn btn-danger">Delete</a></td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+<td><a href="/CreateLesson" class="btn btn-info">+ Create new</a></td>
 
 @if (responseMessage != null)
 {
@@ -59,16 +61,16 @@ else
 
 @code {
     private IEnumerable<Lesson> lessons;
-
+    private Lesson lessonsPost;
     private string responseMessage { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        lessons = await httpClient.GetFromJsonAsync<IEnumerable<Lesson>>
+        lessons = await httpClient.GetFromJsonAsync<List<Lesson>>
             ("https://localhost:5001/api/Lessons");
     }
     protected override async Task OnParametersSetAsync()
     {
-        lessons = await httpClient.GetFromJsonAsync<IEnumerable<Lesson>>
+        lessons = await httpClient.GetFromJsonAsync<List<Lesson>>
             ("https://localhost:5001/api/Lessons");
     }
     public async Task Delete(Guid Id)
@@ -82,7 +84,6 @@ else
             {
                 responseMessage = await response.Content.ReadAsStringAsync();
             }
-
         }
     }
 }

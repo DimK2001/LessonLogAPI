@@ -1,0 +1,70 @@
+﻿@page "/CreateLesson"
+@using LessonLog.Domain;
+@using Microsoft.Extensions.Logging
+@using Newtonsoft.Json
+@inject IJSRuntime js
+
+<h3>Create</h3>
+
+
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+
+
+
+<div class="row">
+    <EditForm Model="@lesson" OnValidSubmit="@InsertAccount">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            Number: <InputNumber id="balance" @bind-Value="lesson.Number" class="form-control" />
+        </div>
+        <div class="form-group">
+            Type: <InputText id="name" @bind-Value="lesson.Type" class="form-control" />
+        </div>
+        <div class="form-group">
+            Date: <InputDate id="name" @bind-Value="lesson.Date" class="form-control" />
+        </div>
+        <div class="form-group">
+            Start: <InputDate id="name" @bind-Value="lesson.StartTime" class="form-control" />
+        </div>
+        <div class="form-group">
+            End: <InputDate id="name" @bind-Value="lesson.EndTime" class="form-control" />
+        </div>
+        <div class="form-group">
+            Theme: <InputText id="name" @bind-Value="lesson.Theme" class="form-control" />
+        </div>
+        <div class="form-group">
+            State: <InputNumber id="name" @bind-Value="lesson.State" class="form-control" />
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-success">Edit</button>
+    </EditForm>
+</div>
+
+<br />
+<br />
+
+@if (responseMessage != null)
+{
+    <p>@responseMessage</p>
+}
+
+
+@* <a href="/Accounts">Back to List</a> *@
+@* *@
+@* *@
+@code {
+
+    private string responseMessage { get; set; }
+    private Lesson lesson = new Lesson();
+
+    private async Task InsertAccount()
+    {
+        var rs = await httpClient.PostAsJsonAsync($"https://localhost:5001/api/Lessons", lesson);
+        responseMessage = await rs.Content.ReadAsStringAsync();
+    }
+
+}

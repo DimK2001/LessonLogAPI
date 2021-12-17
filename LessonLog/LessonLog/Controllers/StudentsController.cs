@@ -24,16 +24,16 @@ namespace LessonLog.API.Controllers
             _studentRepository = new StudentRepository(_context);
         }
 
-        // GET: api/Lessons
+        // GET: api/Students
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetLessons()
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
             return await _studentRepository.GetAllAsync();
         }
 
-        // GET: api/Lessons/5
+        // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentOutDTO>> GetLesson(Guid id)
+        public async Task<ActionResult<StudentOutDTO>> GetStudent(Guid id)
         {
             var student = await _studentRepository.GetByIdAsync(id);
 
@@ -54,10 +54,10 @@ namespace LessonLog.API.Controllers
             return dto;
         }
 
-        // PUT: api/Lessons/5
+        // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLesson(Guid id, StudentOutDTO student)
+        public async Task<IActionResult> PutStudent(Guid id, StudentOutDTO student)
         {
             if (id != student.Id)
             {
@@ -69,10 +69,10 @@ namespace LessonLog.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Lessons
+        // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<StudentOutDTO>> PostLesson(StudentDTO studentDTO)
+        public async Task<ActionResult<StudentOutDTO>> PostStudent(StudentDTO studentDTO)
         {
             var student = new Student()
             {
@@ -89,9 +89,9 @@ namespace LessonLog.API.Controllers
             return CreatedAtAction("GetStudent", new { id = id }, student);
         }
 
-        // DELETE: api/Lessons/5
+        // DELETE: api/Students/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLesson(Guid id)
+        public async Task<IActionResult> DeleteStudent(Guid id)
         {
             var student = await _studentRepository.GetByIdAsync(id);
 

@@ -24,16 +24,16 @@ namespace LessonLog.API.Controllers
             _groupRepository = new GroupRepository(_context);
         }
 
-        // GET: api/Lessons
+        // GET: api/Groups
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Group>>> GetLessons()
+        public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
         {
             return await _groupRepository.GetAllAsync();
         }
 
-        // GET: api/Lessons/5
+        // GET: api/Group/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GroupOutDTO>> GetLesson(Guid id)
+        public async Task<ActionResult<GroupOutDTO>> GetGroup(Guid id)
         {
             var group = await _groupRepository.GetByIdAsync(id);
 
@@ -53,10 +53,10 @@ namespace LessonLog.API.Controllers
             return dto;
         }
 
-        // PUT: api/Lessons/5
+        // PUT: api/Groups/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLesson(Guid id, GroupOutDTO group)
+        public async Task<IActionResult> PutGroup(Guid id, GroupOutDTO group)
         {
             if (id != group.Id)
             {
@@ -68,10 +68,10 @@ namespace LessonLog.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Lessons
+        // POST: api/Groups
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<GroupOutDTO>> PostLesson(GroupDTO groupDTO)
+        public async Task<ActionResult<GroupOutDTO>> PosGroup(GroupDTO groupDTO)
         {
             var group = new Group()
             {
@@ -85,9 +85,9 @@ namespace LessonLog.API.Controllers
             return CreatedAtAction("GetGroup", new { id = id }, group);
         }
 
-        // DELETE: api/Lessons/5
+        // DELETE: api/Groups/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLesson(Guid id)
+        public async Task<IActionResult> DeleteGroup(Guid id)
         {
             var group = await _groupRepository.GetByIdAsync(id);
 
