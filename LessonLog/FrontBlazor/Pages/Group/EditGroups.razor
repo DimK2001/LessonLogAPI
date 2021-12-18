@@ -1,0 +1,83 @@
+﻿@page "/EditGroup/{stId:guid}"
+@using LessonLog.Domain;
+@using Microsoft.Extensions.Logging
+@using Newtonsoft.Json
+@inject IJSRuntime js
+
+<h3>EditGroup</h3>
+
+
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+
+@stId
+
+<div class="row">
+    <EditForm Model="@group" OnValidSubmit="@InsertAccount">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            GroupNumber: <InputText id="balance" @bind-Value="group.GroupNumber" class="form-control" />
+        </div>
+        <div class="form-group">
+            DirectionNumber: <InputText id="name" @bind-Value="group.DirectionNumber" class="form-control" />
+        </div>
+        <div class="form-group">
+            DirectionName: <InputText id="name" @bind-Value="group.DirectionName" class="form-control" />
+        </div>
+        <div class="form-group">
+            LessonId: <InputText id="name" @bind-Value="LessonId" class="form-control" />
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-success">Edit</button>
+    </EditForm>
+</div>
+
+<br />
+<br />
+
+@if (responseMessage != null)
+{
+    <p>@responseMessage</p>
+}
+
+
+@* <a href="/Accounts">Back to List</a> *@
+@* *@
+@* *@
+@code {
+
+    [Parameter]
+    public Guid stId { get; set; }
+    public string LessonId { get; set; }
+
+    private string responseMessage { get; set; }
+    private Group group = new Group();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var _gr = await httpClient.GetFromJsonAsync<Group>
+            ($"https://localhost:5001/api/Groups/{stId}");
+        group.Id = _gr.Id;
+        group.GroupNumber = _gr.GroupNumber;
+        group.DirectionName = _gr.DirectionName;
+        group.DirectionNumber = _gr.DirectionNumber;
+        group.LessonId = _gr.LessonId;
+    }
+    private async Task InsertAccount()
+    {
+        group.LessonId = Guid.Parse(LessonId);
+        var rs = await httpClient.PutAsJsonAsync($"https://localhost:5001/api/Groups/{stId}", group);
+        if (rs.IsSuccessStatusCode)
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+    }
+
+}

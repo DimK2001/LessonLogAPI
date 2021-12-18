@@ -1,0 +1,87 @@
+﻿@page "/EditStudents/{stId:guid}"
+@using LessonLog.Domain;
+@using Microsoft.Extensions.Logging
+@using Newtonsoft.Json
+@inject IJSRuntime js
+
+<h3>EditStudent</h3>
+
+
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+
+@stId
+
+<div class="row">
+    <EditForm Model="@student" OnValidSubmit="@InsertAccount">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            Name: <InputText id="balance" @bind-Value="student.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            AttestationMark: <InputText id="name" @bind-Value="student.AttestationMark" class="form-control" />
+        </div>
+        <div class="form-group">
+            ExamMark: <InputText id="name" @bind-Value="student.ExamMark" class="form-control" />
+        </div>
+        <div class="form-group">
+            GroupFlag: <input type="checkbox" id="name" @bind="student.GroupFlag" class="form-control" />
+        </div>
+        <div class="form-group">
+            GroupId: <InputText id="name" @bind-Value="GroupId" class="form-control" />
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-success">Edit</button>
+    </EditForm>
+</div>
+
+<br />
+<br />
+
+@if (responseMessage != null)
+{
+    <p>@responseMessage</p>
+}
+
+
+@* <a href="/Accounts">Back to List</a> *@
+@* *@
+@* *@
+@code {
+
+    [Parameter]
+    public Guid stId { get; set; }
+    public string GroupId { get; set; }
+
+    private string responseMessage { get; set; }
+    private Student student = new Student();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var _st = await httpClient.GetFromJsonAsync<Student>
+            ($"https://localhost:5001/api/Students/{stId}");
+        student.Id = _st.Id;
+        student.Name = _st.Name;
+        student.AttestationMark = _st.AttestationMark;
+        student.ExamMark = _st.ExamMark;
+        student.GroupFlag = _st.GroupFlag;
+        student.GroupId = _st.GroupId;
+    }
+    private async Task InsertAccount()
+    {
+        student.GroupId = Guid.Parse(GroupId);
+        var rs = await httpClient.PutAsJsonAsync($"https://localhost:5001/api/Students/{stId}", student);
+        if (rs.IsSuccessStatusCode)
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+    }
+
+}

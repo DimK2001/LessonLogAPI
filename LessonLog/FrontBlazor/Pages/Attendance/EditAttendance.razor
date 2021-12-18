@@ -1,0 +1,85 @@
+﻿@page "/EditAttendance/{stId:guid}"
+@using LessonLog.Domain;
+@using Microsoft.Extensions.Logging
+@using Newtonsoft.Json
+@inject IJSRuntime js
+
+<h3>EditAttendance</h3>
+
+
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+
+@stId
+
+<div class="row">
+    <EditForm Model="@attendance" OnValidSubmit="@InsertAccount">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            Number: <InputText id="balance" @bind-Value="attendance.Status" class="form-control" />
+        </div>
+        <div class="form-group">
+            Date: <InputDate id="name" @bind-Value="attendance.Comming" class="form-control" />
+        </div>
+        <div class="form-group">
+            Start: <InputDate id="name" @bind-Value="attendance.Leaving" class="form-control" />
+        </div>
+        <div class="form-group">
+            State: <InputText id="name" @bind-Value="LessonId" class="form-control" />
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-success">Edit</button>
+    </EditForm>
+</div>
+
+<br />
+<br />
+
+@if (responseMessage != null)
+{
+    <p>@responseMessage</p>
+}
+
+
+@* <a href="/Accounts">Back to List</a> *@
+@* *@
+@* *@
+@code {
+
+    [Parameter]
+    public Guid stId { get; set; }
+    public string LessonId { get; set; }
+
+    private string responseMessage { get; set; }
+    private Attendance attendance = new Attendance();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var _att = await httpClient.GetFromJsonAsync<Attendance>
+            ($"https://localhost:5001/api/Attendances/{stId}");
+        attendance.Id = _att.Id;
+        attendance.Status = _att.Status;
+        attendance.Comming = _att.Comming;
+        attendance.Leaving = _att.Leaving;
+        attendance.PresenceTime = _att.PresenceTime;
+        attendance.PresencePercentage = _att.PresencePercentage;
+        attendance.LessonId = _att.LessonId;
+    }
+    private async Task InsertAccount()
+    {
+        attendance.LessonId = Guid.Parse(LessonId);
+        var rs = await httpClient.PutAsJsonAsync($"https://localhost:5001/api/Attendances/{stId}", attendance);
+        if (rs.IsSuccessStatusCode)
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+    }
+
+}

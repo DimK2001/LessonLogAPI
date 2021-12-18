@@ -1,0 +1,87 @@
+﻿@page "/EditTeachers/{stId:guid}"
+@using LessonLog.Domain;
+@using Microsoft.Extensions.Logging
+@using Newtonsoft.Json
+@inject IJSRuntime js
+
+<h3>EditTeachers</h3>
+
+
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+
+@stId
+
+<div class="row">
+    <EditForm Model="@teacher" OnValidSubmit="@InsertAccount">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            Name: <InputText id="balance" @bind-Value="teacher.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            Post: <InputText id="name" @bind-Value="teacher.Post" class="form-control" />
+        </div>
+        <div class="form-group">
+            AcademicPosition: <InputText id="name" @bind-Value="teacher.AcademicPosition" class="form-control" />
+        </div>
+        <div class="form-group">
+            AcademicTitle: <InputText id="name" @bind-Value="teacher.AcademicTitle" class="form-control" />
+        </div>
+        <div class="form-group">
+            LessonId: <InputText id="name" @bind-Value="LessonId" class="form-control" />
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-success">Edit</button>
+    </EditForm>
+</div>
+
+<br />
+<br />
+
+@if (responseMessage != null)
+{
+    <p>@responseMessage</p>
+}
+
+
+@* <a href="/Accounts">Back to List</a> *@
+@* *@
+@* *@
+@code {
+
+    [Parameter]
+    public Guid stId { get; set; }
+    public string LessonId { get; set; }
+
+    private string responseMessage { get; set; }
+    private Teacher teacher = new Teacher();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var _tea = await httpClient.GetFromJsonAsync<Teacher>
+            ($"https://localhost:5001/api/Teachers/{stId}");
+        teacher.Id = _tea.Id;
+        teacher.Name = _tea.Name;
+        teacher.Post = _tea.Post;
+        teacher.AcademicPosition = _tea.AcademicPosition;
+        teacher.AcademicTitle = _tea.AcademicTitle;
+        teacher.LessonId = _tea.LessonId;
+    }
+    private async Task InsertAccount()
+    {
+        teacher.LessonId = Guid.Parse(LessonId);
+        var rs = await httpClient.PutAsJsonAsync($"https://localhost:5001/api/Teachers/{stId}", teacher);
+        if (rs.IsSuccessStatusCode)
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            responseMessage = await rs.Content.ReadAsStringAsync();
+        }
+    }
+
+}

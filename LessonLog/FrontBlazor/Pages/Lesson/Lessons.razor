@@ -28,8 +28,6 @@ else
                 <th>EndTime</th>
                 <th>Theme</th>
                 <th>State</th>
-                <th>Theme</th>
-                <th>State</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +59,6 @@ else
 
 @code {
     private IEnumerable<Lesson> lessons;
-    private Lesson lessonsPost;
     private string responseMessage { get; set; }
     protected override async Task OnInitializedAsync()
     {

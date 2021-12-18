@@ -1,0 +1,65 @@
+﻿@page "/CreateStudent"
+@using LessonLog.Domain;
+@using Microsoft.Extensions.Logging
+@using Newtonsoft.Json
+@inject IJSRuntime js
+
+<h3>Create</h3>
+
+
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+
+
+
+<div class="row">
+    <EditForm Model="@student" OnValidSubmit="@InsertAccount">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            Number: <InputText id="balance" @bind-Value="student.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            AttestationMark: <InputText id="name" @bind-Value="student.AttestationMark" class="form-control" />
+        </div>
+        <div class="form-group">
+            ExamMark: <InputText id="name" @bind-Value="student.ExamMark" class="form-control" />
+        </div>
+        <div class="form-group">
+            GroupFlag: <input type="checkbox" id="name" @bind="student.GroupFlag" class="form-control" />
+        </div>
+        <div class="form-group">
+            GroupId: <InputText id="name" @bind-Value="GroupId" class="form-control" />
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-success">Done</button>
+    </EditForm>
+</div>
+
+<br />
+<br />
+
+@if (responseMessage != null)
+{
+    <p>@responseMessage</p>
+}
+
+
+@* <a href="/Accounts">Back to List</a> *@
+@* *@
+@* *@
+@code {
+    public string GroupId { get; set; }
+    private string responseMessage { get; set; }
+    private Student student = new Student();
+
+    private async Task InsertAccount()
+    {
+        student.GroupId = Guid.Parse(GroupId);
+        var rs = await httpClient.PostAsJsonAsync($"https://localhost:5001/api/Students", student);
+        responseMessage = await rs.Content.ReadAsStringAsync();
+    }
+
+}
